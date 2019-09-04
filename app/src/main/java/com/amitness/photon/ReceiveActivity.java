@@ -39,6 +39,9 @@ public class ReceiveActivity extends AppCompatActivity {
     private boolean startBitDetected = false;
     private boolean isTransferring = true;
 
+    //from alex
+    public TextView bgIntensityTextVar, rawReadingTextVar, curLightIntenTextVar;
+
     private void updateUI() {
         runOnUiThread(new Runnable() {
             @Override
@@ -62,6 +65,11 @@ public class ReceiveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive);
 
+        //BG intensity and rawReading
+        bgIntensityTextVar = findViewById(R.id.bgIntensityText);
+        rawReadingTextVar = findViewById(R.id.rawReadingText);
+        curLightIntenTextVar = findViewById(R.id.curLightIntenText);
+
         records = new TreeMap<Long, Float>();
 
         mTextViewLightLabel = findViewById(R.id.sensorValue);
@@ -82,12 +90,23 @@ public class ReceiveActivity extends AppCompatActivity {
 //                    Log.d("Start timestamp: ", String.valueOf(referenceTime));
                     bgIntensity = event.values[0];
                     records.put(0L, bgIntensity);
+
+                    //todo playing with bgIntensity
                     Log.d("Background Intensity: ", String.valueOf(bgIntensity));
+                    bgIntensityTextVar.setText("bgIntensity: " + bgIntensity);
+
 //                    rawReading += "0";
                 }
 
+                //todo playing with rawReading
                 Log.d("RawReading:", String.valueOf(rawReading));
+                rawReadingTextVar.setText("rawReading: " + rawReading);
+
                 currentLightIntensity = event.values[0];
+
+                //todo playing with currentLightIntensity
+                curLightIntenTextVar.setText("currentLightIntensity: " + currentLightIntensity);
+
                 if (currentLightIntensity > 1000 && !started) {
                     lastTime = System.currentTimeMillis();
                     started = true;
