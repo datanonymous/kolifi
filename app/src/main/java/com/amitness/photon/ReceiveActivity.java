@@ -121,6 +121,7 @@ public class ReceiveActivity extends AppCompatActivity {
                 }
                 long currentTime = System.currentTimeMillis();
 
+                //todo this was previously at 499, what if i change it?
                 if ((currentTime - lastTime) > 499 && started) {
                     Log.d("1 second.", "passed.");
                     lastTime = currentTime;

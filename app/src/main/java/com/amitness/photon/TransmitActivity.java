@@ -153,8 +153,12 @@ public class TransmitActivity extends AppCompatActivity implements AdapterView.O
     }
 
     private void transmitData() {
-        final int frequency = 2; // bps
-        final int milliSecond = 1000 / frequency;
+        //todo what if i change frequency from 2?
+//        final int frequency = 2; // bps //original code
+        //todo what if i change milliSecond from 1000?
+//        final int milliSecond = 1000 / frequency; //original code
+        final int milliSecond = 100;
+
         FlashLight led = new FlashLight();
         try {
             for (char bit : bitStream.toCharArray()) {

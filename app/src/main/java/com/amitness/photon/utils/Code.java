@@ -20,6 +20,7 @@ public class Code {
         return stopBits;
     }
 
+    //todo what if i change the startBits from 100?
     private final String startBits = "100";
     private final String stopBits = "000";
 
