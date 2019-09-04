@@ -15,12 +15,12 @@
     <string name="enter_text">Message</string>
     <string name="splash_description">Splash Screen</string>
     <string-array name="menu_items">
-        <item>Play Music</item>
-        <item>Browse Internet</item>
-        <item>Open Camera</item>
-        <item>Call someone</item>
-        <item>Send Email</item>
-        <item>Send SMS</item>
-        <item>Change device settings</item>
+        <item>item A</item>
+        <item>item B</item>
+        <item>item C</item>
+        <item>item D</item>
+        <item>item E</item>
+        <item>item F</item>
+        <item>item G</item>
     </string-array>
 </resources>

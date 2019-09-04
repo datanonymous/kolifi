@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amitness.photon.utils.Code;
 
@@ -63,7 +64,7 @@ public class ReceiveActivity extends AppCompatActivity {
 
         records = new TreeMap<Long, Float>();
 
-        mTextViewLightLabel = (TextView) findViewById(R.id.sensorValue);
+        mTextViewLightLabel = findViewById(R.id.sensorValue);
         mTextViewLightLabel.setText("Waiting for transfer...");
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 //        mTextViewLightLabel.setText("Receiving...");
@@ -182,43 +183,49 @@ public class ReceiveActivity extends AppCompatActivity {
     }
 
     private void performAction(String received) {
-        Intent intent = null;
+//        Intent intent = null;
         switch (received) {
             case "A":
                 Log.d("Got A.", received);
 //                intent = getAppIntent("com.kabouzeid.gramophone");
-                String fileLocation = "file:///" + Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/Music/joel.mp3";
-                intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse(fileLocation), "audio/*");
+//                String fileLocation = "file:///" + Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/Music/joel.mp3";
+//                intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setDataAndType(Uri.parse(fileLocation), "audio/*");
 //                startActivity(intent);
+                Toast.makeText(this, "case A", Toast.LENGTH_LONG).show();
                 break;
 
             case "B":
-                String url = "http://www.google.com";
-                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                String url = "http://www.google.com";
+//                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                Toast.makeText(this, "case B", Toast.LENGTH_LONG).show();
                 break;
 
             case "C":
-                intent = getAppIntent("com.google.android.GoogleCamera");
+//                intent = getAppIntent("com.google.android.GoogleCamera");
+                Toast.makeText(this, "case C", Toast.LENGTH_LONG).show();
                 break;
 
             case "D":
-                intent = getAppIntent("com.android.dialer");
+//                intent = getAppIntent("com.android.dialer");
+                Toast.makeText(this, "case D", Toast.LENGTH_LONG).show();
                 break;
             case "E":
-                intent = getAppIntent("com.google.android.apps.inbox");
+//                intent = getAppIntent("com.google.android.apps.inbox");
+                Toast.makeText(this, "case E", Toast.LENGTH_LONG).show();
                 break;
             case "F":
-                intent = getAppIntent("com.android.messaging");
+//                intent = getAppIntent("com.android.messaging");
+                Toast.makeText(this, "case F", Toast.LENGTH_LONG).show();
                 break;
             case "G":
-                intent = getAppIntent("com.android.settings");
-
+//                intent = getAppIntent("com.android.settings");
+                Toast.makeText(this, "case G", Toast.LENGTH_LONG).show();
                 break;
         }
-        if (intent != null) {
-            startActivity(intent);
-        }
+//        if (intent != null) {
+//            startActivity(intent);
+//        }
     }
 
 

@@ -37,7 +37,7 @@ public class TransmitActivity extends AppCompatActivity implements AdapterView.O
 
 
         // Code for spinner
-        Spinner mySpinner = (Spinner) findViewById(R.id.myspinner);
+        Spinner mySpinner = findViewById(R.id.myspinner);
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(TransmitActivity.this, android.R.layout.simple_list_item_1,
                 getResources().getStringArray(R.array.menu_items));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -100,10 +100,8 @@ public class TransmitActivity extends AppCompatActivity implements AdapterView.O
 
     @SuppressWarnings("deprecation")
     public void startTransmission(View view) {
-        progressBar = (ProgressBar) findViewById(R.id.progressbar);
-        textView = (TextView) findViewById(R.id.textview);
-
-
+        progressBar = findViewById(R.id.progressbar);
+        textView = findViewById(R.id.textview);
         Log.d("SendButton", "User clicked the button.");
 //        EditText edit = (EditText) findViewById(R.id.user_message);
 //        userMessage = edit.getText().toString().toUpperCase();
@@ -131,7 +129,6 @@ public class TransmitActivity extends AppCompatActivity implements AdapterView.O
     }
 
     private void showProgress() {
-
         int bitLength = bitStream.length();
         progressStatus = 0;
         while (progressStatus < 100) {
@@ -185,6 +182,6 @@ public class TransmitActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         userMessage = "";
-
     }
+
 }
