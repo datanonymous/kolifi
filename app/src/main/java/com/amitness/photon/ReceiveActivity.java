@@ -10,12 +10,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.Calendar;
 
 import com.amitness.photon.utils.Code;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.TreeMap;
 
 public class ReceiveActivity extends AppCompatActivity {
@@ -24,10 +28,10 @@ public class ReceiveActivity extends AppCompatActivity {
     private TextView mTextViewLightLabel;
     private SensorManager mSensorManager;
     private SensorEventListener mEventListenerLight;
-    private float currentLightIntensity;
-    private float bgIntensity = -1;
-    private ArrayList<Float> intensityValues = new ArrayList<>();
-    private TreeMap<Long, Float> records;
+    private double currentLightIntensity;
+    private double bgIntensity = -1; //changed from float
+    private ArrayList<Double> intensityValues = new ArrayList<>();
+    private TreeMap<Long, Double> records;
     private Code bc = new Code();
     private long startTime;
     private long lastTime;
@@ -39,8 +43,8 @@ public class ReceiveActivity extends AppCompatActivity {
     private boolean startBitDetected = false;
     private boolean isTransferring = true;
 
-    //from alex
     public TextView bgIntensityTextVar, rawReadingTextVar, curLightIntenTextVar;
+    public Button recalcBackgroundVar;
 
     private void updateUI() {
         runOnUiThread(new Runnable() {
@@ -65,55 +69,45 @@ public class ReceiveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive);
 
-        //BG intensity and rawReading
         bgIntensityTextVar = findViewById(R.id.bgIntensityText);
         rawReadingTextVar = findViewById(R.id.rawReadingText);
         curLightIntenTextVar = findViewById(R.id.curLightIntenText);
 
-        records = new TreeMap<Long, Float>();
+        recalcBackgroundVar = findViewById(R.id.recalcBackground);
+
+        records = new TreeMap<Long, Double>();
 
         mTextViewLightLabel = findViewById(R.id.sensorValue);
         mTextViewLightLabel.setText("Waiting for transfer...");
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-//        mTextViewLightLabel.setText("Receiving...");
 
         mEventListenerLight = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
 
                 if (bgIntensity == -1) {
-                    //startTime = System.currentTimeMillis();
-                    //startTime = event.timestamp;
                     startTime = System.currentTimeMillis();
-//                    referenceTime = System.currentTimeMillis();
-                    Log.d("Start timestamp: ", String.valueOf(startTime));
-//                    Log.d("Start timestamp: ", String.valueOf(referenceTime));
                     bgIntensity = event.values[0];
                     records.put(0L, bgIntensity);
-
-                    //todo playing with bgIntensity
-                    Log.d("Background Intensity: ", String.valueOf(bgIntensity));
-                    bgIntensityTextVar.setText("bgIntensity: " + bgIntensity);
-
-//                    rawReading += "0";
+                    Date currentDateTime = Calendar.getInstance().getTime();
+                    bgIntensityTextVar.setText("Time: " + currentDateTime + " bgIntensity: " + bgIntensity);
                 }
 
-                //todo playing with rawReading
-                Log.d("RawReading:", String.valueOf(rawReading));
+                recalcBackgroundVar.setOnClickListener(V-> {
+                    Date currentDateTime = Calendar.getInstance().getTime();
+                    bgIntensity = event.values[0];
+                    bgIntensityTextVar.setText("Time: " + currentDateTime + " bgIntensity: " + bgIntensity);
+                });
+
                 rawReadingTextVar.setText("rawReading: " + rawReading);
 
                 currentLightIntensity = event.values[0];
-
-                //todo playing with currentLightIntensity
                 curLightIntenTextVar.setText("currentLightIntensity: " + currentLightIntensity);
 
                 if (currentLightIntensity > 1000 && !started) {
                     lastTime = System.currentTimeMillis();
                     started = true;
-//                    mTextViewLightLabel.setText("1");
-//                    rawReading += "1";
                 }
-                //long timestamp = event.timestamp;
                 if (currentLightIntensity > bgIntensity) {
                     bit = "1";
                 } else {
@@ -127,17 +121,10 @@ public class ReceiveActivity extends AppCompatActivity {
                     lastTime = currentTime;
                     records.put(currentTime - startTime, currentLightIntensity);
                     Log.d("Bit:", bit);
-//                    mTextViewLightLabel.setText(bit);
                     rawReading += bit;
                 }
 
-
-                //records.put( referenceTime + Math.round((timestamp - startTime) / 1000000.0), lastLightValue);
-                //records.put(timestamp - startTime, lastLightValue);
-//                Log.d("Time Stamp:", String.valueOf(timestamp));
                 intensityValues.add(currentLightIntensity);
-//                Log.d("Sensor Value", String.valueOf(lastLightIntensity));
-
 
                 String startBits = bc.getStartBits();
                 String stopBits = bc.getStopBits();
@@ -150,8 +137,6 @@ public class ReceiveActivity extends AppCompatActivity {
                             System.out.println("Start bit detected.");
                             mTextViewLightLabel.setText("Start bit detected.");
                             startBitDetected = true;
-                            // received =  "";
-                            // System.exit(0);
                         }
                     } else {
 
@@ -159,24 +144,14 @@ public class ReceiveActivity extends AppCompatActivity {
                             payload += lastFiveBits;
                             System.out.println("Stop bit detected.");
                             isTransferring = false;
-//                            mSensorManager.unregisterListener(mEventListenerLight);
-//                            updateUI();
                             mSensorManager.unregisterListener(mEventListenerLight);
                             updateUI();
                         } else {
-//                            System.out.println("Stop bit detected.");
-//                            isTransferring = false;
-////                            mSensorManager.unregisterListener(mEventListenerLight);
-////                            updateUI();
-//                            mSensorManager.unregisterListener(mEventListenerLight);
-//                            updateUI();
+
                         }
                     }
                     rawReading = "";
                 }
-                // System.out.println("==>" + received);
-
-//                updateUI();
             }
 
             @Override
@@ -198,7 +173,6 @@ public class ReceiveActivity extends AppCompatActivity {
         Log.d("Read all values:", String.valueOf(records));
         Log.d("Read all data:", rawReading);
         mSensorManager.unregisterListener(mEventListenerLight);
-//        updateUI();
         super.onStop();
     }
 
@@ -206,51 +180,29 @@ public class ReceiveActivity extends AppCompatActivity {
 //        Intent intent = null;
         switch (received) {
             case "A":
-                Log.d("Got A.", received);
-//                intent = getAppIntent("com.kabouzeid.gramophone");
-//                String fileLocation = "file:///" + Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/Music/joel.mp3";
-//                intent = new Intent(Intent.ACTION_VIEW);
-//                intent.setDataAndType(Uri.parse(fileLocation), "audio/*");
-//                startActivity(intent);
                 Toast.makeText(this, "case A", Toast.LENGTH_LONG).show();
                 break;
 
             case "B":
-//                String url = "http://www.google.com";
-//                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 Toast.makeText(this, "case B", Toast.LENGTH_LONG).show();
                 break;
 
             case "C":
-//                intent = getAppIntent("com.google.android.GoogleCamera");
                 Toast.makeText(this, "case C", Toast.LENGTH_LONG).show();
                 break;
 
             case "D":
-//                intent = getAppIntent("com.android.dialer");
                 Toast.makeText(this, "case D", Toast.LENGTH_LONG).show();
                 break;
             case "E":
-//                intent = getAppIntent("com.google.android.apps.inbox");
                 Toast.makeText(this, "case E", Toast.LENGTH_LONG).show();
                 break;
             case "F":
-//                intent = getAppIntent("com.android.messaging");
                 Toast.makeText(this, "case F", Toast.LENGTH_LONG).show();
                 break;
             case "G":
-//                intent = getAppIntent("com.android.settings");
                 Toast.makeText(this, "case G", Toast.LENGTH_LONG).show();
                 break;
         }
-//        if (intent != null) {
-//            startActivity(intent);
-//        }
-    }
-
-
-    private Intent getAppIntent(String packageName) {
-        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
-        return launchIntent;
     }
 }

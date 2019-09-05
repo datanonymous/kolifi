@@ -157,7 +157,7 @@ public class TransmitActivity extends AppCompatActivity implements AdapterView.O
 //        final int frequency = 2; // bps //original code
         //todo what if i change milliSecond from 1000?
 //        final int milliSecond = 1000 / frequency; //original code
-        final int milliSecond = 100;
+//        final int milliSecond = 100;
 
         FlashLight led = new FlashLight();
         try {
@@ -167,7 +167,7 @@ public class TransmitActivity extends AppCompatActivity implements AdapterView.O
                 } else {
                     led.turnOff();
                 }
-                sleep(milliSecond);
+                sleep(100);
             }
             led.release();
         } catch (InterruptedException e) {
