@@ -129,7 +129,7 @@ public class ReceiveActivity extends AppCompatActivity {
                 String startBits = bc.getStartBits();
                 String stopBits = bc.getStopBits();
 
-
+                //todo changing rawReading.length() >= 3 from 3 to 5?
                 if (rawReading.length() >= 3) {
                     lastFiveBits = rawReading.substring(rawReading.length() - 3);
                     if (!startBitDetected) {
@@ -139,7 +139,6 @@ public class ReceiveActivity extends AppCompatActivity {
                             startBitDetected = true;
                         }
                     } else {
-
                         if (!lastFiveBits.equals(stopBits)) {
                             payload += lastFiveBits;
                             System.out.println("Stop bit detected.");
@@ -177,20 +176,16 @@ public class ReceiveActivity extends AppCompatActivity {
     }
 
     private void performAction(String received) {
-//        Intent intent = null;
         switch (received) {
             case "A":
                 Toast.makeText(this, "case A", Toast.LENGTH_LONG).show();
                 break;
-
             case "B":
                 Toast.makeText(this, "case B", Toast.LENGTH_LONG).show();
                 break;
-
             case "C":
                 Toast.makeText(this, "case C", Toast.LENGTH_LONG).show();
                 break;
-
             case "D":
                 Toast.makeText(this, "case D", Toast.LENGTH_LONG).show();
                 break;
