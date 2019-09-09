@@ -25,7 +25,7 @@ public class Code {
     private final String stopBits = "";
 
     public Code() {
-        encodingMap.put('A', "001");
+        encodingMap.put('A', "1010101010"); //originally 001
         encodingMap.put('B', "010");
         encodingMap.put('C', "011");
         encodingMap.put('D', "100");

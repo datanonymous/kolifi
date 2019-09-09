@@ -130,7 +130,7 @@ public class ReceiveActivity extends AppCompatActivity {
                 String stopBits = bc.getStopBits();
 
                 //todo changing rawReading.length() >= 3 from 3 to 5?
-                if (rawReading.length() >= 5) {
+                if (rawReading.length() >= 4) {
                     lastFiveBits = rawReading.substring(rawReading.length() - 3);
                     if (!startBitDetected) {
                         if (lastFiveBits.equals(startBits)) {

@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amitness.photon.utils.Code;
 import com.amitness.photon.utils.FlashLight;
@@ -38,8 +39,7 @@ public class TransmitActivity extends AppCompatActivity implements AdapterView.O
 
         // Code for spinner
         Spinner mySpinner = findViewById(R.id.myspinner);
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(TransmitActivity.this, android.R.layout.simple_list_item_1,
-                getResources().getStringArray(R.array.menu_items));
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(TransmitActivity.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.menu_items));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner.setAdapter(myAdapter);
         mySpinner.setOnItemSelectedListener(this);
@@ -99,6 +99,7 @@ public class TransmitActivity extends AppCompatActivity implements AdapterView.O
 
 
     @SuppressWarnings("deprecation")
+    //todo pressing the button in the transmit activity leads to startTransmission()
     public void startTransmission(View view) {
         progressBar = findViewById(R.id.progressbar);
         textView = findViewById(R.id.textview);
@@ -161,6 +162,7 @@ public class TransmitActivity extends AppCompatActivity implements AdapterView.O
 
         FlashLight led = new FlashLight();
         try {
+            //todo something is up with this for loop...
             for (char bit : bitStream.toCharArray()) {
                 if (bit == '1') {
                     led.turnOn();
@@ -169,6 +171,11 @@ public class TransmitActivity extends AppCompatActivity implements AdapterView.O
                 }
                 sleep(100);
             }
+            //todo what does bitStream say?
+            Log.i("asdf", "BitStream (.toCharArray()): " + bitStream.toCharArray());
+            Log.i("asdf", "BitStream: " + bitStream);
+            Log.i("asdf", "BitStream (.length): " + bitStream.length());
+
             led.release();
         } catch (InterruptedException e) {
             String TAG = "Flash";
